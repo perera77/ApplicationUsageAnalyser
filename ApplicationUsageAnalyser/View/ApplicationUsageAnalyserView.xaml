@@ -1,0 +1,60 @@
+﻿<Window x:Class="ApplicationUsageAnalyser.View.ApplicationUsageAnalyserView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+         
+        mc:Ignorable="d"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Title="Application Usage Analyser" Height="450" MinWidth="600" MaxWidth="600">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Cursor="{Binding Cursor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label HorizontalAlignment="Stretch" Content="Application Usage" Background="Aqua" FontSize="24" FontWeight="Bold" />
+        <DockPanel Grid.Row="1" Margin="10" HorizontalAlignment="Stretch" Background="White">
+            <TextBox Width="500" IsReadOnly="True"
+                     Style="{StaticResource MaterialDesignTextBox}"
+                     materialDesign:HintAssist.Hint="Select application usage data file"
+                     ToolTip="Application usage data file"
+                     Text="{Binding SelectedFilePath, Mode=OneWay}" />
+            <Button Width="50" Height="40" HorizontalAlignment="Right" IsDefault="True"
+                Style="{StaticResource MaterialDesignRaisedLightButton}"
+                ToolTip="Open application usage data file" Command="{Binding OpenDataFileCommand}" >
+                <materialDesign:PackIcon Kind="FileCsv" VerticalAlignment="Center" Width="20" Height="20" />
+            </Button>
+        </DockPanel>
+
+        <DataGrid Grid.Row="2" Margin="10" Visibility="{Binding ApplicationUsageVisibility}"
+                 ItemsSource ="{ Binding ApplicationList}" AutoGenerateColumns="False"
+                  Style="{StaticResource MaterialDesignDataGrid}" IsReadOnly="True" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Application" Binding="{Binding ApplicationID}" />
+                <DataGridTextColumn Header="Users" Binding="{Binding Users}" />
+                <DataGridTextColumn Header="Desktops" Binding="{Binding Desktops}" />
+                <DataGridTextColumn Header="Laptops" Binding="{Binding Laptops}" />
+                <DataGridTextColumn Header="Required Copies" Binding="{Binding RequiredCopies}" />
+            </DataGrid.Columns>
+            
+        </DataGrid>
+
+        <ProgressBar Grid.Row="3" Margin="2" Height="15" Minimum="0" Maximum="100" Value="{Binding ProgressValue, Mode=OneWay}"
+                     Style="{StaticResource MaterialDesignLinearProgressBar}"
+                     />
+        <TextBlock Grid.Row="3" Margin="2" Text="{Binding ProgressText}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Grid>
+</Window>
